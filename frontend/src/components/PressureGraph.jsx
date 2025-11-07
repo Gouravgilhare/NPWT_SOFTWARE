@@ -32,7 +32,7 @@ export default function PressureGraph() {
   const lastTsRef = useRef(null);
   const INTERVAL_MS = 1000;
   const MAX_POINTS = 60;
-  const LOCAL_URL = "http://localhost:8080/api/device/local-data";
+  const LOCAL_URL = "http://backend:8080/api/device/local-data";
 
   // normalize various possible server responses into an array of points
   const normalizeResponse = (resData) => {

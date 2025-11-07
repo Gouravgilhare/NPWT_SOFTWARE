@@ -1,0 +1,48 @@
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: npwt-mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: npwt
+      MYSQL_USER: npwt_user
+      MYSQL_PASSWORD: npwt_pass
+    ports:
+      - "3307:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - npwt-network
+
+  backend:
+    build: ./backend
+    container_name: npwt-backend
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mysql
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/npwt
+      SPRING_DATASOURCE_USERNAME: npwt_user
+      SPRING_DATASOURCE_PASSWORD: npwt_pass
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+    networks:
+      - npwt-network
+
+  frontend:
+    build: ./frontend
+    container_name: npwt-frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    networks:
+      - npwt-network
+
+volumes:
+  db_data:
+
+networks:
+  npwt-network:
+    driver: bridge

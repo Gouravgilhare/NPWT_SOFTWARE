@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#000000" />
+  <meta name="description" content="NPWT frontend UI" />
+  <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
+  <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+
+  <!-- Preload font for smoother UI rendering -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <!-- Apply saved theme as early as possible to avoid flash of unthemed UI -->
+  <script>
+    (function () {
+      try {
+        var theme = localStorage.getItem('theme') || 'light';
+        document.documentElement.setAttribute('data-theme', theme);
+        // update theme-color meta for mobile UI chrome
+        var meta = document.querySelector('meta[name="theme-color"]');
+        if (!meta) {
+          meta = document.createElement('meta'); meta.name = 'theme-color';
+          document.head.appendChild(meta);
+        }
+        meta.content = theme === 'dark' ? '#071025' : '#f5f7fb';
+      } catch (e) { /* silent */ }
+    })();
+  </script>
+
+  <!-- Minimal inline preloader styles (visible until app loads) -->
+  <style>
+    #preloader {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255, 255, 255, 0.92);
+      z-index: 9999;
+      transition: opacity .2s
+    }
+
+    [data-theme="dark"] #preloader {
+      background: rgba(7, 16, 37, 0.9)
+    }
+
+    .spinner {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      border: 5px solid rgba(0, 0, 0, 0.08);
+      border-top-color: rgba(31, 111, 235, 0.95);
+      animation: spin 1s linear infinite
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg)
+      }
+    }
+  </style>
+
+  <title>NPWT App</title>
+</head>
+
+<body>
+  <noscript>You need to enable JavaScript to run this app.</noscript>
+
+  <!-- simple preloader shown while app bundles load -->
+  <div id="preloader" aria-hidden="true">
+    <div class="spinner" role="img" aria-label="loading"></div>
+  </div>
+
+  <div id="root"></div>
+
+  <!-- hide preloader once the page has fully loaded -->
+  <script>
+    window.addEventListener('load', function () {
+      try {
+        var p = document.getElementById('preloader');
+        if (p) p.style.opacity = '0', setTimeout(function () { if (p.parentNode) p.parentNode.removeChild(p); }, 250);
+      } catch (e) { /* silent */ }
+    });
+  </script>
+
+  <!--
+      This HTML file is a template.
+      If you open it directly in the browser, you will see an empty page.
+
+      You can add webfonts, meta tags, or analytics to this file.
+      The build step will place the bundled scripts into the <body> tag.
+
+      To begin the development, run `npm start` or `yarn start`.
+      To create a production bundle, use `npm run build` or `yarn build`.
+    -->
+</body>
+
+</html>
